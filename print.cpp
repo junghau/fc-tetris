@@ -49,7 +49,7 @@ void printPiece(const PIECE &p){
 
     for (block = 0; block < 4; block++){
 
-        setLed(ADDRESS, p.index[block].y, p.index[block].x, TRUE );
+        setLed(ADDRESS, p.index[block].row, p.index[block].column, TRUE );
 
     }
 
@@ -74,6 +74,6 @@ void update(void){
 
     printState();
     deletePiece();
-    printPiece();
+    printPiece(/*piece var with type PIECE*/);
 
 }

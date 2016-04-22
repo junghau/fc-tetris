@@ -22,8 +22,20 @@ typedef enum {
 	CAUTION!!! x and y do not work like the coordinate in a graph (where x is horizontal and y is vertical)
 */
 struct LOCATION {
-	int x;	//column
-	int y;	//row
+	int row, column;
+
+	/*
+	**********THE POWER OF AMPERSAND ALIAS(&)**********
+	For your convenience, I have added the following: 
+	Now, row can be accessed with row, r, or x, and column can be accessed with column, c, or y
+	Therefore (x == r == row) and also (y == c == column)
+	*/
+	
+	int &x = row;	//row
+	int &r = row;	//row
+	int &y  = column;	//column
+	int &c = column;	//column
+
 	//LOCATION() :x{0}, y{0} {}
 	LOCATION(int x = 0, int y = 0) {
 		LOCATION::x = x;

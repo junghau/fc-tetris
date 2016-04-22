@@ -1,6 +1,7 @@
 # fc-tetris
 Arduino Tetris
 
+If the box is ticked, it means it is currently being worked on.
 # To do
 - [ ] Introduce gameState matrix
 - [ ] Add collision testing function

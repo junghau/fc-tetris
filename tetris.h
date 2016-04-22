@@ -14,9 +14,16 @@ typedef enum {
 	I = 1, J, L, O, S, T, Z
 }SHAPE;
 
+/*
+	LOCATION struct is a alternative representation of a 2D-array
+	Therefore x is considered as the row of a particular array, and y is considered as the column of a particular array.
+	e.g. L.x and L.y is equivalent to the 2D-array of L[x][y]
+
+	CAUTION!!! x and y do not work like the coordinate in a graph (where x is horizontal and y is vertical)
+*/
 struct LOCATION {
-	int x;
-	int y;
+	int x;	//column
+	int y;	//row
 	//LOCATION() :x{0}, y{0} {}
 	LOCATION(int x = 0, int y = 0) {
 		LOCATION::x = x;

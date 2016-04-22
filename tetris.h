@@ -46,7 +46,7 @@ struct PIECE {
 	ORIENTATION state;
 	SHAPE shape;
 	PIECE() :state{up}, shape{I} {} //initializer
-	PIECE operator=(PIECE x) {
+	PIECE operator=(const PIECE &x) {
 		for (int i = 0; i < 4;i++)
 			index[i] = x.index[i];
 		state = x.state;
@@ -54,7 +54,7 @@ struct PIECE {
 	}
 };
 
-
+//Funtion prototype
 void rotate(PIECE &p);
 bool compare(LOCATION centre, LOCATION x, LOCATION transformation);
 inline void transform(LOCATION &buffer, LOCATION original, LOCATION transformation);

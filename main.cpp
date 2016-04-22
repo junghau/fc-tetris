@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "tetris.h"
 
+void printPIECE_LOCATION(const PIECE &p);
+
 int main() {
 	
 	//Assigning example testing piece
@@ -13,11 +15,20 @@ int main() {
 	test.shape = J;
 	test.state = right;
 
+	printPIECE_LOCATION(test);
 	rotate(test);
+	printPIECE_LOCATION(test);
 	rotate(test);
-	//printf("%d\n",test.index[2].x);
+	printPIECE_LOCATION(test);
 
 	system("pause");
 	return 0;
 }
 
+void printPIECE_LOCATION(const PIECE &p) {
+
+	for (int i = 0; i <= 3; i++) {
+		printf("(%d, %d)\n",p.index[i].x,p.index[i].y);
+	}
+	printf("\n");
+}

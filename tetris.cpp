@@ -34,12 +34,12 @@ LOCATION loc_3x3[8] = { {-1,-1}  //La
 						,{0,-1}	 //Ld
 						};
 
+//Funtion prototype
+loc getLOC(const PIECE &p, int i); //Get location in terms of Lx from coordinate by comparing to index[0]
 
-loc getLOC(PIECE p, int i);
-
-void rotate(PIECE &p) { //clockwise rotation
-	LOCATION buffer[4];
-	buffer[0](p.index[0].x, p.index[0].y);
+void rotate(PIECE &p) { //clockwise rotation (-90 degree)
+	LOCATION buffer[3];
+	//buffer[0](p.index[0].x, p.index[0].y);
 
 	if (p.shape == O) { //Ignore square
 		return;
@@ -53,33 +53,33 @@ void rotate(PIECE &p) { //clockwise rotation
 		for (int i = 1; i <= 3; i++) {
 			switch (getLOC(p,i)){
 			case La:
-				transform(buffer[i], p.index[i], transformation_3x3[0]);
+				transform(buffer[i-1], p.index[i], transformation_3x3[0]);
 				break;
 			case Lc:
-				transform(buffer[i], p.index[i], transformation_3x3[1]);
+				transform(buffer[i-1], p.index[i], transformation_3x3[1]);
 				break;
 			case Li:
-				transform(buffer[i], p.index[i], transformation_3x3[2]);
+				transform(buffer[i-1], p.index[i], transformation_3x3[2]);
 				break;
 			case Lg:
-				transform(buffer[i], p.index[i], transformation_3x3[3]);
+				transform(buffer[i-1], p.index[i], transformation_3x3[3]);
 				break;
 			case Lb:
-				transform(buffer[i], p.index[i], transformation_3x3[4]);
+				transform(buffer[i-1], p.index[i], transformation_3x3[4]);
 				break;
 			case Lf:
-				transform(buffer[i], p.index[i], transformation_3x3[5]);
+				transform(buffer[i-1], p.index[i], transformation_3x3[5]);
 				break;
 			case Lh:
-				transform(buffer[i], p.index[i], transformation_3x3[6]);
+				transform(buffer[i-1], p.index[i], transformation_3x3[6]);
 				break;
 			case Ld:
-				transform(buffer[i], p.index[i], transformation_3x3[7]);
+				transform(buffer[i-1], p.index[i], transformation_3x3[7]);
 				break;
 			}
 		}
-		for (int i = 0; i < 4;i++)
-			p.index[i] = buffer[i];	//Copy buffer to current piece
+		for (int i = 1; i <= 3;i++)
+			p.index[i] = buffer[i-1];	//Copy buffer to current piece
 	}
 	
 switch	(p.state) {
@@ -99,7 +99,7 @@ switch	(p.state) {
 
 }
 
-loc getLOC(PIECE p, int i) {
+loc getLOC(const PIECE &p, int i) {
 	LOCATION centre(p.index[0].x, p.index[0].y);
 	for (int k = 0; k < 8; k++) {
 		if (compare(centre, p.index[i], loc_3x3[k])) {

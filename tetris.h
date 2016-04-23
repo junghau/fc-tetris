@@ -20,6 +20,7 @@ typedef enum {
 	e.g. L.x and L.y is equivalent to the 2D-array of L[x][y]
 
 	CAUTION!!! x and y do not work like the coordinate in a graph (where x is horizontal and y is vertical)
+	UNLESS you #define COLUMN_ROW then x will become column and y will become row
 */
 struct LOCATION {
 	int row, column;
@@ -31,10 +32,16 @@ struct LOCATION {
 	Therefore (x == r == row) and also (y == c == column)
 	*/
 	
-	int &x = row;	//row
 	int &r = row;	//row
-	int &y  = column;	//column
 	int &c = column;	//column
+
+#ifdef COLUMN_ROW
+	int &x = column;	//column
+	int &y = row;	//row
+#else
+	int &x = row;	//row
+	int &y = column;	//column
+#endif
 
 	//LOCATION() :x{0}, y{0} {}
 	LOCATION(int a = 0, int b = 0) {

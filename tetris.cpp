@@ -12,27 +12,49 @@ enum loc
 {
 	La, Lb, Lc, Ld, Le, Lf, Lg, Lh, Li
 };
-
-const LOCATION transformation_3x3[8] = { {0,2}	 //La->Lc
-									,{2,0}	 //Lc->Li
-									,{0,-2}  //Li->Lg
-									,{-2,0}  //Lg->La
-									,{1,1}	 //Lb->Lf
-									,{1,-1}	 //Lf->Lh
-									,{-1,-1} //Lh->Ld
-									,{-1,1}	 //Ld->La
+#ifdef COLUMN_ROW
+const LOCATION transformation_3x3[8] = { {2,0}	 //La->Lc
+										,{0,2}	 //Lc->Li
+										,{-2,0}	 //Li->Lg
+										,{0,-2}	 //Lg->La
+										,{1,1}	 //Lb->Lf
+										,{-1,1}	 //Lf->Lh
+										,{-1,-1} //Lh->Ld
+										,{1,-1}	 //Ld->La
 									};
 
 //Location compared to the centre (Le)
+const LOCATION loc_3x3[8] = {{-1,-1} //La
+							,{1,-1}	 //Lc
+							,{1,1}	 //Li
+							,{-1,1}  //Lg
+							,{0,-1}	 //Lb
+							,{1,0}	 //Lf
+							,{0,1}	 //Lh
+							,{-1,0}	 //Ld
+							};
+#else
+const LOCATION transformation_3x3[8] = { {0,2}	 //La->Lc
+										,{2,0}	 //Lc->Li
+										,{0,-2}  //Li->Lg
+										,{-2,0}  //Lg->La
+										,{1,1}	 //Lb->Lf
+										,{1,-1}	 //Lf->Lh
+										,{-1,-1} //Lh->Ld
+										,{-1,1}	 //Ld->La
+										};
+
+//Location compared to the centre (Le)
 const LOCATION loc_3x3[8] = { {-1,-1}  //La
-						,{-1,1}	 //Lc
-						,{1,1}	 //Li
-						,{1,-1}  //Lg
-						,{-1,0}	 //Lb
-						,{0,1}	 //Lf
-						,{1,0}	 //Lh
-						,{0,-1}	 //Ld
-						};
+							,{-1,1}	 //Lc
+							,{1,1}	 //Li
+							,{1,-1}  //Lg
+							,{-1,0}	 //Lb
+							,{0,1}	 //Lf
+							,{1,0}	 //Lh
+							,{0,-1}	 //Ld
+							};
+#endif
 
 //Funtion prototype
 loc getLOC(const PIECE &p, int i); //Get location in terms of Lx from coordinate by comparing to index[0]

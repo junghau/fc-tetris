@@ -21,6 +21,9 @@
     <ClCompile Include="tetris.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="print.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tetris.h">

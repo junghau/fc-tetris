@@ -121,9 +121,9 @@ switch	(p.state) {
 }
 
 loc getLOC(const PIECE &p, int i) {
-	LOCATION centre(p.index[0].x, p.index[0].y);
+	LOCATION centre(p.index[0]);
 	for (int k = 0; k < 8; k++) {
-		if (compare(centre, p.index[i], loc_3x3[k])) {
+		if (centre+loc_3x3[k] == p.index[i]) {
 			switch (k) {
 			case 0:
 				return La;
@@ -146,14 +146,6 @@ loc getLOC(const PIECE &p, int i) {
 			}
 		}
 	}
-}
-
-bool compare(LOCATION centre, LOCATION current, LOCATION loc) {
-	LOCATION buffer(centre.x + loc.x, centre.y + loc.y);
-	if (buffer == current)
-		return true;
-	else
-		return false;
 }
 
 inline void transform(LOCATION &buffer, LOCATION original, LOCATION transformation) {

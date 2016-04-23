@@ -1,12 +1,12 @@
 # fc-tetris
 Arduino Tetris
 
-If the box is ticked, it means it is currently being worked on.
+(If the box is ticked, it means it is currently being worked on.)
 # To do
 - [ ] Introduce gameState matrix
 - [ ] Add collision testing function
 - [ ] I-shape Rotation
-- [ ] Add ability to process input
+- [x] Add ability to process input
 - [ ] Add ability to introduce new pieces
 - [ ] Add fall() after delay
 

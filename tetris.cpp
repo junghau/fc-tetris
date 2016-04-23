@@ -1,6 +1,5 @@
 #include "tetris.h"
 
-
 /*
 La| Lb |Lc
 ----------

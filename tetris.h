@@ -37,18 +37,18 @@ struct LOCATION {
 	int &c = column;	//column
 
 	//LOCATION() :x{0}, y{0} {}
-	LOCATION(int x = 0, int y = 0) {
-		LOCATION::x = x;
-		LOCATION::y = y;
+	LOCATION(int a = 0, int b = 0) {
+		LOCATION::x = a;
+		LOCATION::y = b;
 	}
-	LOCATION operator()(int x, int y) { //overload () operator to enable easy (x,y) assignment
-		LOCATION::x = x;
-		LOCATION::y = y;
+	LOCATION operator()(int a, int b) { //overload () operator to enable easy (x,y) assignment
+		LOCATION::x = a;
+		LOCATION::y = b;
 		return *this;
 	}
-	LOCATION operator=(LOCATION x) {
-		LOCATION::x = x.x;
-		LOCATION::y = x.y;
+	LOCATION operator=(LOCATION L) {
+		LOCATION::x = L.x;
+		LOCATION::y = L.y;
 		return *this;
 	}
 };
@@ -65,11 +65,11 @@ struct PIECE {
 	ORIENTATION state;
 	SHAPE shape;
 	PIECE() :state{up}, shape{I} {} //initializer
-	PIECE operator=(const PIECE &x) {
+	PIECE operator=(const PIECE &p) {
 		for (int i = 0; i < 4;i++)
-			index[i] = x.index[i];
-		state = x.state;
-		shape = x.shape;
+			index[i] = p.index[i];
+		state = p.state;
+		shape = p.shape;
 	}
 };
 

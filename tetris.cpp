@@ -13,7 +13,7 @@ enum loc
 	La, Lb, Lc, Ld, Le, Lf, Lg, Lh, Li
 };
 
-LOCATION transformation_3x3[8] = { {0,2}	 //La->Lc
+const LOCATION transformation_3x3[8] = { {0,2}	 //La->Lc
 									,{2,0}	 //Lc->Li
 									,{0,-2}  //Li->Lg
 									,{-2,0}  //Lg->La
@@ -24,7 +24,7 @@ LOCATION transformation_3x3[8] = { {0,2}	 //La->Lc
 									};
 
 //Location compared to the centre (Le)
-LOCATION loc_3x3[8] = { {-1,-1}  //La
+const LOCATION loc_3x3[8] = { {-1,-1}  //La
 						,{-1,1}	 //Lc
 						,{1,1}	 //Li
 						,{1,-1}  //Lg
@@ -127,9 +127,9 @@ loc getLOC(const PIECE &p, int i) {
 	}
 }
 
-bool compare(LOCATION centre, LOCATION x, LOCATION loc) {
+bool compare(LOCATION centre, LOCATION current, LOCATION loc) {
 	LOCATION buffer(centre.x + loc.x, centre.y + loc.y);
-	if (buffer == x)
+	if (buffer == current)
 		return true;
 	else
 		return false;

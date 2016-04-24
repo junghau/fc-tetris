@@ -58,7 +58,7 @@ struct LOCATION {
 		LOCATION::y = L.y;
 		return *this;
 	}
-	const LOCATION operator+(LOCATION L) {
+	LOCATION operator+(LOCATION L) {
 		LOCATION buffer(x+L.x,y+L.y);
 		return buffer;
 	}

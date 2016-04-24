@@ -60,7 +60,6 @@ loc getLOC(const PIECE &p, int i); //Get location in terms of Lx from coordinate
 
 void rotate(PIECE &p) { //clockwise rotation (-90 degree)
 	LOCATION buffer[3];
-	//buffer[0](p.index[0].x, p.index[0].y);
 
 	if (p.shape == O) { //Ignore square
 		return;
@@ -123,7 +122,7 @@ switch	(p.state) {
 loc getLOC(const PIECE &p, int i) {
 	LOCATION centre(p.index[0]);
 	for (int k = 0; k < 8; k++) {
-		if (centre+loc_3x3[k] == p.index[i]) {
+		if (centre + loc_3x3[k] == p.index[i]) {
 			switch (k) {
 			case 0:
 				return La;
@@ -149,6 +148,5 @@ loc getLOC(const PIECE &p, int i) {
 }
 
 inline void transform(LOCATION &buffer, LOCATION original, LOCATION transformation) {
-	buffer.x = original.x + transformation.x;
-	buffer.y = original.y + transformation.y;
+	buffer = original + transformation;
 }

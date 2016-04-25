@@ -5,7 +5,7 @@ Arduino Tetris
 # To do
 - [ ] Introduce gameState matrix
 - [ ] Add collision testing function
-- [ ] I-shape Rotation
+- [X] I-shape Rotation
 - [x] Add ability to process input
 - [ ] Add ability to introduce new pieces
 - [ ] Add fall() after delay

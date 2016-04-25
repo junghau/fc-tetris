@@ -7,11 +7,11 @@
 
 
 typedef enum {
-	up = 0, 1, 2, 3 //the direction of the top of the piece is pointing to
+	up = 0, right, down, left //the direction of the top of the piece is pointing to
 }ORIENTATION;
 
 typedef enum {
-	L = 0, 1, 2, 3, 4, 5, 6
+	L = 0, J, T, S, Z, I, O
 }SHAPE;
 
 /*

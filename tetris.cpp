@@ -35,6 +35,8 @@ const int list[5][3] = {
 
 void rotate(PIECE &p){
 
+	int block, access;
+
 	if(p.shape <= 4){
 		for(block = 1; block <= 3; block++){ //could have done it in one line, but too long for readability/presentation.
 			access = ( list[p.shape][block] + 2 * p.orientation ) % 8;

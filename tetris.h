@@ -7,11 +7,11 @@
 
 
 typedef enum {
-	up = 1, right, down, left //the direction of the top of the piece is pointing to
+	up = 0, 1, 2, 3 //the direction of the top of the piece is pointing to
 }ORIENTATION;
 
 typedef enum {
-	I = 1, J, L, O, S, T, Z
+	L = 0, 1, 2, 3, 4, 5, 6
 }SHAPE;
 
 /*
@@ -27,21 +27,16 @@ struct LOCATION {
 
 	/*
 	**********THE POWER OF AMPERSAND ALIAS(&)**********
-	For your convenience, I have added the following: 
+	For your convenience, I have added the following:
 	Now, row can be accessed with row, r, or x, and column can be accessed with column, c, or y
 	Therefore (x == r == row) and also (y == c == column)
 	*/
-	
+
 	int &r = row;	//row
 	int &c = column;	//column
 
-#ifdef COLUMN_ROW
 	int &x = column;	//column
 	int &y = row;	//row
-#else
-	int &x = row;	//row
-	int &y = column;	//column
-#endif
 
 	//LOCATION() :x{0}, y{0} {}
 	LOCATION(int a = 0, int b = 0) {
@@ -58,8 +53,12 @@ struct LOCATION {
 		LOCATION::y = L.y;
 		return *this;
 	}
-	const LOCATION operator+(LOCATION L) {
+	LOCATION operator+(LOCATION L) {
 		LOCATION buffer(x+L.x,y+L.y);
+		return buffer;
+	}
+	LOCATION operator - (LOCATION L) {
+		LOCATION buffer(x - L.x, y - L.y );
 		return buffer;
 	}
 };

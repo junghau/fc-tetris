@@ -10,7 +10,7 @@ Lg| Lh |Li| 3
 
 */
 
-const LOCATION transformation_3x3[8] = { {2, 0}	 //La->Lc
+const LOCATION transformation_3x3[12] = { 										 {2, 0}	 //La->Lc
 																				,{1, 1}	 //Lb->Lf
 																				,{0, 2}	 //Lc->Li
 																				,{-1,1}	 //Lf->Lh
@@ -45,11 +45,11 @@ void rotate(PIECE &p){
 	} else if (p.shape == 5){
 		if(p.orientation == 0){
 			for(block = 0; block < 4; block++){
-				p.index[block] = p.index[block] + transformation_3x3[block + 8]
+				p.index[block] = p.index[block] + transformation_3x3[block + 7]
 			}
 		} else {
 			for(block = 0; block < 4; block++){
-				p.index[block] = p.index[block] - transformation_3x3[block + 8]
+				p.index[block] = p.index[block] - transformation_3x3[block + 7]
 			}
 		}
 	}

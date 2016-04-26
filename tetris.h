@@ -1,6 +1,8 @@
 #ifndef TETRIS_H
 #define TETRIS_H
 
+#define COLUMN_ROW
+
 #define xLEN 8
 #define yLEN 16
 
@@ -31,12 +33,16 @@ struct LOCATION {
 	Now, row can be accessed with row, r, or x, and column can be accessed with column, c, or y
 	Therefore (x == r == row) and also (y == c == column)
 	*/
-
 	int &r = row;	//row
 	int &c = column;	//column
 
+#ifdef COLUMN_ROW
 	int &x = column;	//column
 	int &y = row;	//row
+#else
+	int &x = row;	//row
+	int &y = column;	//column
+#endif
 
 	//LOCATION() :x{0}, y{0} {}
 	LOCATION(int a = 0, int b = 0) {
@@ -57,7 +63,7 @@ struct LOCATION {
 		LOCATION buffer(x+L.x,y+L.y);
 		return buffer;
 	}
-	LOCATION operator - (LOCATION L) {
+	LOCATION operator-(LOCATION L) {
 		LOCATION buffer(x - L.x, y - L.y );
 		return buffer;
 	}

@@ -7,6 +7,8 @@ Ld|(Le)|Lf
 ----------
 Lg| Lh |Li
 */
+
+#ifdef RANDOM_BLOCK
 enum loc
 {
 	La, Lb, Lc, Ld, Le, Lf, Lg, Lh, Li
@@ -150,3 +152,71 @@ loc getLOC(const PIECE &p, int i) {
 inline void transform(LOCATION &buffer, LOCATION original, LOCATION transformation) {
 	buffer = original + transformation;
 }
+
+#else
+#ifdef COLUMN_ROW
+const LOCATION transformation[12] = {{2,0}	 //La->Lc
+									,{1,1}	 //Lb->Lf
+									,{0,2}	 //Lc->Li
+									,{-1,1}	 //Lf->Lh
+									,{-2,0}	 //Li->Lg
+									,{-1,-1} //Lh->Ld
+									,{0,-2}	 //Lg->La
+									,{1,-1}	 //Ld->Lb
+									,{2,-1}	 //special transform for I piece block 0
+									,{1,0}	 //special transform for I piece block 1
+									,{0,1}	 //special transform for I piece block 2
+									,{-1,2}	 //special transform for I piece block 3
+									};
+#else
+const LOCATION transformation[12] = {{0,2}	 //La->Lc
+									,{1,1}	 //Lb->Lf
+									,{2,0}	 //Lc->Li
+									,{1,-1}	 //Lf->Lh
+									,{0,-2}	 //Li->Lg
+									,{-1,-1} //Lh->Ld
+									,{-2,0}	 //Lg->La
+									,{-1,1}	 //Ld->Lb
+									,{-1,2}	 //special transform for I piece block 0
+									,{0,1}	 //special transform for I piece block 1
+									,{1,0}	 //special transform for I piece block 2
+									,{2,-1}	 //special transform for I piece block 3
+									};
+#endif
+
+const int BLOCK_CONST[5][3] = { { 1, 4, 5 }, //L
+								{ 1, 5, 6 }, //J
+								{ 1, 3, 7 }, //T
+								{ 1, 2, 7 }, //S
+								{ 1, 0, 3 }  //Z
+								};
+
+void rotate(PIECE &p) {
+
+	int block, access;
+
+	if (p.shape <= 4) {
+		for (block = 1; block <= 3; block++) { //could have done it in one line, but too long for readability/presentation.
+			access = (BLOCK_CONST[p.shape][block] + 2 * p.state) % 8;
+			p.index[block] = p.index[block] + transformation[access];
+		}
+	}
+	else if (p.shape == 5) {
+		if (p.state == 0) {
+			for (block = 0; block < 4; block++) {
+				p.index[block] = p.index[block] + transformation[block + 7];
+			}
+		}
+		else {
+			for (block = 0; block < 4; block++) {
+				p.index[block] = p.index[block] - transformation[block + 7];
+			}
+		}
+	}
+
+	p.state = static_cast<ORIENTATION>((p.state + 1) % 4); //Hope it works
+
+	return;
+
+}
+#endif

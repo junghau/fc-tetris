@@ -4,7 +4,6 @@ Arduino Tetris
 (If the box is ticked, it means it is currently being worked on.)
 # To do
 - [X] Introduce gameState matrix
-- [X] Add collision testing function
 - [x] Add ability to process input
 - [ ] Add ability to introduce new pieces
 - [ ] Add fall() after delay

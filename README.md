@@ -3,15 +3,24 @@ Arduino Tetris
 
 (If the box is ticked, it means it is currently being worked on.)
 # To do
-- [X] Introduce gameState matrix
-- [x] Add ability to process input
-- [ ] Add ability to introduce new pieces
-- [ ] Add fall() after delay
-- [ ] Write general game logic with sequence with input handling
+
+- [X] Stage complete, awaiting testing before further tasks
+
+# Optional
+- [ ] Adjust drop-down from single row drop to smooth dropping
+- [ ] Adjust game speed
 
 # Follow-up
-- [ ] Put together update(), intro(), and delay(), nointerrupt(), attachInterrupt()
-- [ ] Add collision testing to above.
+
+- [ ] Randomize initial piece orientation
+- [ ] Allow pieces to start from ABOVE the screen
+- [ ] Optimize code accordingly
+
+#extra features
+- [ ] Score counter
+- [ ] Design large scale with jumbo LEDs
 
 #end stage
-- [ ] Prototype with arduino
+- [X] Design circuitry
+- [X] Prototype with Arduino (PENDING)
+- [X] Redesign code based on experiment (Hopefully no calls for huge overhauls.)

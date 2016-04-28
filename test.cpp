@@ -10,7 +10,7 @@ int gamestate[8][16];
 
 */
 
-int testWall(int direction){ //needs changing
+int wallTest(int direction){ //needs changing
 
     if(!(p.ORIENTATION % 2)){
         if(p.SHAPE <= 4){ //BLOCK 1
@@ -39,12 +39,12 @@ int testWall(int direction){ //needs changing
     else return 0;
 }
 
-int testBlock(PIECE &currentPiece){
+int blockTest(PIECE &currentPiece){
 
     int i;
 
     for(i = 0; i < 4; i++){
-        if(gamestate[currentPiece.index[i].x][currentPiece.index[i].y] == 1){
+        if(gamestate[currentPiece.index[i].column][currentPiece.index[i].row] == 1){
             return False;
         }
     }
@@ -53,41 +53,16 @@ int testBlock(PIECE &currentPiece){
 
 }
 
-void shift( PIECE &currentPiece , int direction){ //needs change
+int testRow(int row){
 
-    PIECE potential = currentPiece;
+    int i;
 
-    for(i = 0; i < 4; i++){
-
-        potential.index[i].x += direction;
-
-    }
-
-
-    if(testBlock(direction)){
-
-        currentPiece = potential;
-
-    }
-
-    return;
-}
-
-void rotation_piece(PIECE &currentPiece){
-
-    int count;
-    PIECE potential = currentPiece;
-
-    shift(potential, testWall(potential));
-
-    while(count = 0; count < 3; count++){
-
-        rotate(potential);
-        if(testBlock(potential)){
-            currentPiece = potential;
-            return;
+    for(i = 0; i < 8; i++){
+        if(gameState[i][16] == 0){
+            return 0;
         }
     }
 
-    return;
+    return 1;
+
 }

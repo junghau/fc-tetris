@@ -67,7 +67,7 @@ void deletePiece(void){
 
 }
 
-void update(void){
+void updateScreen(void){
 
     //delete old piece off screen.
     //print new piece.

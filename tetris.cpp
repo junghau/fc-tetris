@@ -366,6 +366,6 @@ void gameOver(void){
 		}
 	}
 
-	RESTART; //can't find function to restart yet;
+	resetFunc();
 
 }

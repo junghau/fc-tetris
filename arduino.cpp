@@ -13,13 +13,14 @@
 #define RIGHT
 #define DOWN
 #define ROTATE
+#define RESETADDRESS //address for arduino reset
 
 int gameState[8][19] = {0}
 unsigned long previousMillis = 0;
 int row, newPiece = 1;
 SHAPE currentPiece;
 
-
+void (* resetFunc)(void) = RESETADDRESS;
 void setup(){
 
     int i;

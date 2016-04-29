@@ -241,7 +241,7 @@ void rotate(PIECE &currentPiece) {
 
 int drop(PIECE &currentPiece){
 
-	PIECE potentialPiece = currentPiece;
+	PIECE potentialPiece(currentPiece);
 	int i;
 
 	for(i = 0; i < 4; i++){

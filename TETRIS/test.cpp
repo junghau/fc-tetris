@@ -37,8 +37,8 @@ int wallTest(int direction){ //needs changing
         }
 
     else return 0;
+    }
 }
-
 int blockTest(PIECE &currentPiece){
 
     int i;
@@ -58,7 +58,7 @@ int testRow(int row){
     int i;
 
     for(i = 0; i < 8; i++){
-        if(gameState[i][16] == 0){
+        if(gameState[row][1] == 0){
             return 0;
         }
     }

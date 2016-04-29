@@ -365,6 +365,7 @@ void gameOver(void){
 			break;
 		}
 	}
+	//placeholder for code to signify game over
 
 	resetFunc();
 

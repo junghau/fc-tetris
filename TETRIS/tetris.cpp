@@ -103,7 +103,7 @@ void rotate(PIECE &p) { //clockwise rotation (-90 degree)
 		for (int i = 1; i <= 3;i++)
 			p.index[i] = buffer[i-1];	//Copy buffer to current piece
 	}
-	
+
 switch	(p.state) {
 	case up:
 		p.state = right;
@@ -156,67 +156,217 @@ inline void transform(LOCATION &buffer, LOCATION original, LOCATION transformati
 #else
 #ifdef COLUMN_ROW
 const LOCATION transformation[12] = {{2,0}	 //La->Lc
-									,{1,1}	 //Lb->Lf
-									,{0,2}	 //Lc->Li
-									,{-1,1}	 //Lf->Lh
+									,{1,-1}	 //Lb->Lf
+									,{0,-2}	 //Lc->Li
+									,{-1,-1}	 //Lf->Lh
 									,{-2,0}	 //Li->Lg
-									,{-1,-1} //Lh->Ld
-									,{0,-2}	 //Lg->La
-									,{1,-1}	 //Ld->Lb
+									,{-1,1} //Lh->Ld
+									,{0,2}	 //Lg->La
+									,{1,1}	 //Ld->Lb
 									,{2,-1}	 //special transform for I piece block 0
 									,{1,0}	 //special transform for I piece block 1
 									,{0,1}	 //special transform for I piece block 2
 									,{-1,2}	 //special transform for I piece block 3
 									};
 #else
-const LOCATION transformation[12] = {{0,2}	 //La->Lc
-									,{1,1}	 //Lb->Lf
+const LOCATION transformation[12] = {{0,-2}	 //La->Lc
+									,{1,-1}	 //Lb->Lf
 									,{2,0}	 //Lc->Li
-									,{1,-1}	 //Lf->Lh
-									,{0,-2}	 //Li->Lg
-									,{-1,-1} //Lh->Ld
+									,{1,1}	 //Lf->Lh
+									,{0,2}	 //Li->Lg
+									,{-1,1} //Lh->Ld
 									,{-2,0}	 //Lg->La
-									,{-1,1}	 //Ld->Lb
-									,{-1,2}	 //special transform for I piece block 0
-									,{0,1}	 //special transform for I piece block 1
+									,{-1,-1}	 //Ld->Lb
+									,{-1,-2}	 //special transform for I piece block 0
+									,{0,-1}	 //special transform for I piece block 1
 									,{1,0}	 //special transform for I piece block 2
-									,{2,-1}	 //special transform for I piece block 3
+									,{2,1}	 //special transform for I piece block 3
 									};
 #endif
 
 const int BLOCK_CONST[5][3] = { { 1, 4, 5 }, //L
 								{ 1, 5, 6 }, //J
 								{ 1, 3, 7 }, //T
-								{ 1, 2, 7 }, //S
-								{ 1, 0, 3 }  //Z
+								{ 1, 6, 7 }, //S
+								{ 1, 3, 4 }  //Z
 								};
 
-void rotate(PIECE &p) {
+const LOCATION initialIndex[7] = {  { 3, 12},
+									{ 3,13 },
+									{ 4,13 },
+									{ 3,14 },
+									{ 4,14 },
+									{ 3,15 },
+									{ 4,15 }
+								};
+const int shape_specific_index[7][4] = {
+										{3, 5, 2,1},
+										{2, 6, 2, 1},
+										{3, 5, 4,1},
+										{3, 5, 4, 2},
+										{4, 6, 1,3},
+										{5, 3, 1,0},
+										{5, 6, 3, 4}
+}
+
+void rotate(PIECE &currentPiece) {
 
 	int block, access;
 
-	if (p.shape <= 4) {
+	if (currentPiece.shape <= 4) {
 		for (block = 1; block <= 3; block++) { //could have done it in one line, but too long for readability/presentation.
-			access = (BLOCK_CONST[p.shape][block] + 2 * p.state) % 8;
-			p.index[block] = p.index[block] + transformation[access];
+			access = (BLOCK_CONST[currentPiece.shape][block] + 2 * currentPiece.state) % 8;
+			currentPiece.index[block] = currentPiece.index[block] + transformation[access];
 		}
 	}
-	else if (p.shape == 5) {
-		if (p.state == 0) {
+	else if (currentPiece.shape == 5) {
+		if (currentPiece.state == 0) {
 			for (block = 0; block < 4; block++) {
-				p.index[block] = p.index[block] + transformation[block + 7];
+				currentPiece.index[block] = currentPiece.index[block] + transformation[block + 7];
 			}
 		}
 		else {
 			for (block = 0; block < 4; block++) {
-				p.index[block] = p.index[block] - transformation[block + 7];
+				currentPiece.index[block] = currentPiece.index[block] - transformation[block + 7];
 			}
 		}
 	}
 
-	p.state = static_cast<ORIENTATION>((p.state + 1) % 4); //Hope it works
+	currentPiece.state = static_cast<ORIENTATION>((currentPiece.state + 1) % 4); //Hope it works
 
 	return;
 
 }
 #endif
+
+int drop(PIECE &currentPiece){
+
+	PIECE potentialPiece = currentPiece;
+	int i;
+
+	for(i = 0; i < 4; i++){
+		if(potentialPiece.index[i].row-- == 0){
+			settle(currentPiece);
+			return 1;
+		}
+	}
+
+	if(blockTest(potentialPiece)){
+		currentPiece = potentialPiece;
+		return 0;
+	}
+
+	else {
+		settle(currentPiece);
+		return 0;
+	}
+}
+
+void settle(PIECE &currentPiece){
+
+	int i;
+
+
+	for(i = 0; i < 4; i++){
+		if(currentPiece.index[i].row >= 16){
+			gameOver();
+		}
+		gameState[currentPiece.index[i].column][currentPiece.index[i].row] = 1;
+	}
+
+	for(i = 0; i < 4; i++){
+		if(testRow(currentPiece.index[i].column)){
+			deleteRow(currentPiece.index[i].column);
+		}
+	}
+
+}
+
+void rotation_piece(PIECE &currentPiece){
+
+    int count;
+    PIECE potentialPiece = currentPiece;
+
+    shift(potential, testWall(potentialPiece));
+
+    while(count = 0; count < 3; count++){
+
+        rotate(potentialPiece);
+        if(testBlock(potentialPiece)){
+            currentPiece = potentialPiece;
+            return;
+        }
+    }
+
+    return;
+}
+
+void shift( PIECE &currentPiece , int direction){ //needs change
+
+    PIECE potentialPiece = currentPiece;
+
+    for(i = 0; i < 4; i++){
+
+        potentialPiece.index[i].column += direction;
+
+    }
+
+
+    if(testBlock(direction)){
+
+        currentPiece = potentialPiece;
+
+    }
+
+    return;
+}
+
+void deleteRow(int row){
+
+	int row = 0, column = 0, block = 0, emptyRow = 0;
+
+	while(row-- < 16){
+		emptyRow = 0;
+		for(column = 0; column < 16; column++ ){
+			gameState[row][column] = gameState[row - 1][column];
+			if(gameState[row - 1][column] == 1){
+				emptyRow = 1;
+			}
+			if(emptyRow){
+				return;
+			}
+		}
+	}
+
+	return;
+
+}
+
+PIECE createPiece(void){
+
+	int i;
+	PIECE currentPiece;
+
+	currentPiece.shape = random(8);
+
+	for(i = 0; i < 4; i++){
+		currentPiece.index[i] = initialIndex[shape_specific_index[currentPiece.shape][i]];
+	}
+
+	currentPiece.state = 0;
+
+	return currentPiece;
+}
+
+void gameOver(void){
+
+	while(1){
+		if(digitalRead(ROTATE) == HIGH){
+			break;
+		}
+	}
+	//placeholder for code to signify game over
+
+	resetFunc();
+
+}

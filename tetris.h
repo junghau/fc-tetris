@@ -6,8 +6,6 @@
 #define xLEN 8
 #define yLEN 16
 
-
-
 typedef enum {
 	up = 0, right, down, left //the direction of the top of the piece is pointing to
 }ORIENTATION;
@@ -91,6 +89,8 @@ struct PIECE {
 
 //Funtion prototype
 void rotate(PIECE &p);
+#ifdef RANDOM_BLOCK
 inline void transform(LOCATION &buffer, LOCATION original, LOCATION transformation);
+#endif
 
 #endif

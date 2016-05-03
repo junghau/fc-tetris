@@ -18,6 +18,18 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="arduino.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="print.cpp" />
+    <ClCompile Include="test.cpp" />
+    <ClCompile Include="tetris.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="print.h" />
+    <ClInclude Include="test.h" />
+    <ClInclude Include="tetris.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EFE5DAB5-EBA7-402B-AB8B-E082F0D7917B}</ProjectGuid>
     <RootNamespace>ATetris</RootNamespace>
@@ -109,13 +121,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="tetris.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="tetris.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

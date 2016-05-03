@@ -6,6 +6,10 @@
 #define xLEN 8
 #define yLEN 16
 
+#define gameState_ROW_count 19
+
+extern int gameState[8][gameState_ROW_count];
+
 typedef enum {
 	up = 0, right, down, left //the direction of the top of the piece is pointing to
 }ORIENTATION;
@@ -88,7 +92,15 @@ struct PIECE {
 };
 
 //Funtion prototype
-void rotate(PIECE &p);
+PIECE createPiece(void);
+int drop(PIECE &currentPiece);
+void settle(PIECE &currentPiece);
+void rotation_piece(PIECE &currentPiece);
+void rotate(PIECE &currentPiece);
+inline void shift(PIECE &currentPiece, int direction);
+inline void deleteRow(int row);
+inline void gameOver(void);
+
 #ifdef RANDOM_BLOCK
 inline void transform(LOCATION &buffer, LOCATION original, LOCATION transformation);
 #endif

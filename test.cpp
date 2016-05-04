@@ -25,7 +25,7 @@ int wallTest(PIECE p/*, int direction*/) { //needs changing
 		else if (p.shape == 5) { //BLOCK 2
 
 			if (p.index[0].x <= 1) {
-				return 2 - p.index[0]; //don't know what to correct since don't know what this is...
+				return 2; //don't know what to correct since don't know what this is...
 			}
 			else if (p.index[0].x == 8) {
 				return -1;

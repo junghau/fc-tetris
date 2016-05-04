@@ -71,7 +71,7 @@ inline void updateScreen(const PIECE &p){
     //print new piece.
 
     printState();
-    deletePiece();
+    deletePiece(p);
     printPiece(p);
 
 }

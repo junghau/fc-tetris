@@ -1,6 +1,7 @@
 #include "tetris.h"
 #include "test.h"
 
+
 /*
 La| Lb |Lc
 ----------
@@ -159,7 +160,7 @@ inline void transform(LOCATION &buffer, LOCATION original, LOCATION transformati
 const LOCATION transformation[12] = {{2,0}	 //La->Lc
 									,{1,-1}	 //Lb->Lf
 									,{0,-2}	 //Lc->Li
-									,{-1,-1}	 //Lf->Lh
+									,{-1,-1} //Lf->Lh
 									,{-2,0}	 //Li->Lg
 									,{-1,1} //Lh->Ld
 									,{0,2}	 //Lg->La

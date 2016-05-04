@@ -1,6 +1,8 @@
 #include "tetris.h"
 #include "print.h"
 
+#include "noArduino.h"
+
 //Pins need numbering, functions need to be parameterised.
 
 #define INTERRUPT1 2
@@ -21,7 +23,7 @@
 int gameState[8][gameState_ROW_count] = {0}; //gameState_ROW_count is defined as 19 in tetris.h
 unsigned long previousMillis = 0;
 int newPiece = 1;
-PIECE currentPiece;
+PIECE currentPiece, previousPiece;
 
 /*
     gameState: contains the positions of blocks that have settled in the playing field
@@ -44,13 +46,18 @@ void setup(){ //initialises the pins to different modes
         pinMode(i, INPUT_PULLUP);
     }
 
+    randomSeed(analogRead(0));
+
 }
 
 void loop(){
 
 
   if(newPiece){ //provides a new piece to the user
+      previousPiece = currentPiece;
       currentPiece = createPiece();
+      updateScreen(currentPiece, previousPiece);
+      newPiece = 0;
   }
   /*
   int upVal = digitalRead(ROTATE);
@@ -67,36 +74,40 @@ void loop(){
     previousMillis = currentMillis;
 
     //noInterrupts(); //might be needed if interrupts are used
-
+    previousPiece = currentPiece;
     newPiece = drop(currentPiece); //performs cycle
-    updateScreen();
+    updateScreen(currentPiece, previousPiece);
 
     //interrupts();
   }
 
   int upVal = digitalRead(ROTATE); //Tests rotate pin
   if(upVal == HIGH){
+      previousPiece = currentPiece;
       rotation_piece(currentPiece);
-      updateScreen(currentPiece);
+      updateScreen(currentPiece, previousPiece);
   }
 
   int downVal = digitalRead(DOWN); //Tests drop pin
   if(downVal == HIGH){
+      previousPiece = currentPiece;
       newPiece = drop(currentPiece);
-      updateScreen(currentPiece);
+      updateScreen(currentPiece, previousPiece);
 
   }
 
   int rightVal = digitalRead(RIGHT); //Tests right pin
   if(rightVal == HIGH){
+      previousPiece = currentPiece;
       shift(currentPiece ,1);
-      updateScreen(currentPiece);
+      updateScreen(currentPiece, previousPiece);
   }
 
   int leftVal = digitalRead(LEFT); //Tests left pin
   if(leftVal == HIGH){
+      previousPiece = currentPiece;
       shift( currentPiece,-1);
-      updateScreen(currentPiece);
+      updateScreen(currentPiece, previousPiece);
   }
 
 }

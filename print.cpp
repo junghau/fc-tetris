@@ -23,8 +23,6 @@
 
 #define ADDRESS <addr>
 
-PIECE previousPiece[4]; //saves the (x,y) of the previous piece to erase it before updating the screen to the new piece.
-
 inline void printState(void){ //shows the current gamestate
 
 	for (int row = 0; row < 16; row++) {
@@ -53,25 +51,25 @@ inline void printPiece(const PIECE &p){
 
 }
 
-inline void deletePiece(void){
+inline void deletePiece(const PIECE &p){
 
     int block;
 
     for (block = 0; block < 4; block++){
 
-        setLed(ADDRESS, previousPiece[1], previousPiece[0], FALSE );
+        setLed(ADDRESS, p.index[block].r, p.index[block].c, FALSE );
 
     }
 
 }
 
-inline void updateScreen(const PIECE &p){
+inline void updateScreen(const PIECE &currentPiece, const PIECE &previousPiece){
 
     //delete old piece off screen.
     //print new piece.
 
     printState();
-    deletePiece(p);
-    printPiece(p);
+    deletePiece(previousPiece);
+    printPiece(currentPiece);
 
 }

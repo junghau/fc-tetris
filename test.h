@@ -2,6 +2,7 @@
 #define TEST_H
 
 #include "tetris.h"
+#include "noArduino.h"
 
 //#define COLUMN_ROW //defined already in tetris.h
 #define False 0

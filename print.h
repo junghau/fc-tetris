@@ -3,6 +3,9 @@
 
 #include <LedControl>
 #include "tetris.h"
+
+#include "noArduino.h"
+
 #define TRUE 1
 #define FALSE 0
 

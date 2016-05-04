@@ -1,6 +1,8 @@
 #ifndef TETRIS_H
 #define TETRIS_H
 
+#include "noArduino.h"
+
 #define COLUMN_ROW
 
 #define xLEN 8

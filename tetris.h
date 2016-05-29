@@ -84,11 +84,14 @@ struct PIECE {
 	SHAPE shape;
 	PIECE() :state{up}, shape{I} {} //initializer
 	PIECE operator = (const PIECE &p) {
-		for (int i = 0; i < 4;i++)
-			index[i] = p.index[i];
+		for (int i = 0; i < 4;i++){
+			index[i].x = p.index[i].x;
+			index[i].y = p.index[i].y;
+		}
 		state = p.state;
 		shape = p.shape;
 	}
+
 };
 
 //Funtion prototype

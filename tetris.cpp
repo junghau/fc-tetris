@@ -11,7 +11,8 @@ Ld|(Le)|Lf
 Lg| Lh |Li
 */
 
-const LOCATION transformation[12] = {{2, 0}	 //La->Lc
+const LOCATION transformation[12] = {
+										{2, 0}	 //La->Lc
 									,{1, -1}	 //Lb->Lf
 									,{0, -2}	 //Lc->Li
 									,{-1, -1}	 //Lf->Lh
@@ -28,19 +29,19 @@ const LOCATION transformation[12] = {{2, 0}	 //La->Lc
 const int BLOCK_CONST[5][3] = {
 								{ 1, 4, 5}, //L
 								{ 1, 5, 6}, //J
-								{ 1, 3, 7}, //T
+								{ 1, 3, 5}, //T
 								{ 1, 6, 7}, //S
 								{ 1, 3, 4}  //Z
 								};
 
 const LOCATION initialIndex[7] = {
-									{ 3, 12},
-									{ 3, 13},
-									{ 4, 13},
-									{ 3, 14},
-									{ 4, 14},
-									{ 3, 15},
-									{ 4, 15}
+									{ 3, 16},
+									{ 3, 17},
+									{ 4, 17},
+									{ 3, 18},
+									{ 4, 18},
+									{ 3, 19},
+									{ 4, 19}
 								};
 const int shape_specific_index[7][4] = {
 										{3, 5, 2, 1},
@@ -64,14 +65,14 @@ void rotate(PIECE &currentPiece) {
 		}
 	}
 	else if (currentPiece.shape == 5) {
-		if (currentPiece.state == 0) {
+		if (!(currentPiece.state % 2)) {
 			for (block = 0; block < 4; block++) {
-				currentPiece.index[block] = currentPiece.index[block] + transformation[block + 7];
+				currentPiece.index[block] = currentPiece.index[block] + transformation[block + 8];
 			}
 		}
 		else {
 			for (block = 0; block < 4; block++) {
-				currentPiece.index[block] = currentPiece.index[block] - transformation[block + 7];
+				currentPiece.index[block] = currentPiece.index[block] - transformation[block + 8];
 			}
 		}
 	}
@@ -87,9 +88,10 @@ int drop(PIECE &currentPiece){
 	for(int i = 0; i < 4; i++){
 		potentialPiece.index[i].x = currentPiece.index[i].x;
 		potentialPiece.index[i].y = currentPiece.index[i].y;
-		potentialPiece.shape = currentPiece.shape;
-		potentialPiece.state = currentPiece.state;
 	}
+
+	potentialPiece.shape = currentPiece.shape;
+	potentialPiece.state = currentPiece.state;
 
 	int i;
 
@@ -115,7 +117,7 @@ int drop(PIECE &currentPiece){
 	else {
 		settle(currentPiece);
 		printf("hit block\n");
-		return 0;
+		return 1;
 	}
 }
 
@@ -128,13 +130,24 @@ void settle(PIECE &currentPiece){
 		if(currentPiece.index[i].row >= 16){
 			gameOver();
 		}
-		gameState[currentPiece.index[i].row][currentPiece.index[i].column] = 1;
+		printf("settling (%d, %d)\n" ,currentPiece.index[i].x ,currentPiece.index[i].y);
+		gameState[currentPiece.index[i].y][currentPiece.index[i].x] = 1;
 	}
 
+	int deleted = 0;
+
 	for(i = 0; i < 4; i++){
-		if(testRow(currentPiece.index[i].column)){
-			deleteRow(currentPiece.index[i].column);
+		printf("settle : testing row %d\n" ,currentPiece.index[i].y );
+
+		while(testRow(currentPiece.index[i].y)){
+			printf("tested row once. %d\n" ,currentPiece.index[i].y);
+			deleteRow(currentPiece.index[i].y);
+			deleted = 1;
 		}
+
+		/*if(deleted){
+			break;
+		}*/
 	}
 
 }
@@ -142,16 +155,23 @@ void settle(PIECE &currentPiece){
 void rotation_piece(PIECE &currentPiece){
 
     int count;
-    PIECE potentialPiece = currentPiece;
+		PIECE potentialPiece;
 
+		for(int i = 0; i < 4; i++){
+			potentialPiece.index[i].x = currentPiece.index[i].x;
+			potentialPiece.index[i].y = currentPiece.index[i].y;
+		}
+
+		potentialPiece.shape = currentPiece.shape;
+		potentialPiece.state = currentPiece.state;
     shift(potentialPiece, wallTest(potentialPiece));
 
     for(count = 0; count < 3; count++){
 
         rotate(potentialPiece);
         if(blockTest(potentialPiece)){
-            currentPiece = potentialPiece;
-            return;
+					currentPiece = potentialPiece;
+          return;
         }
     }
 
@@ -160,14 +180,16 @@ void rotation_piece(PIECE &currentPiece){
 
 /*inline*/ void shift(PIECE &currentPiece , int direction){
 
-    PIECE potentialPiece;
+		PIECE potentialPiece;
 
 		for(int i = 0; i < 4; i++){
 			potentialPiece.index[i].x = currentPiece.index[i].x;
 			potentialPiece.index[i].y = currentPiece.index[i].y;
-			potentialPiece.shape = currentPiece.shape;
-			potentialPiece.state = currentPiece.state;
 		}
+
+		potentialPiece.shape = currentPiece.shape;
+		potentialPiece.state = currentPiece.state;
+
 
 		printf("entering shift\n");
     for(int i = 0; i < 4; i++){
@@ -191,19 +213,12 @@ void rotation_piece(PIECE &currentPiece){
 
 /*inline*/ void deleteRow(int row){
 
-	int column = 0, block = 0, emptyRow = 0;
 
-	while(row-- < 16){
-		emptyRow = 0;
-		for(column = 0; column < 16; column++ ){
-			gameState[row][column] = gameState[row - 1][column];
-			if(gameState[row - 1][column] == 1){
-				emptyRow = 1;
-			}
-			if(emptyRow){
-				return;
-			}
+	while(row < 15){
+		for(int column = 0; column < 16; column++ ){
+			gameState[row][column] = gameState[row + 1][column];
 		}
+		row++;
 	}
 
 }
@@ -214,7 +229,7 @@ PIECE createPiece(void){
 	PIECE currentPiece;
 
 	//currentPiece.shape = static_cast<SHAPE>(random(6));
-	currentPiece.shape = J;
+	currentPiece.shape = T;
 	for(i = 0; i < 4; i++){
 		currentPiece.index[i] = initialIndex[shape_specific_index[currentPiece.shape][i]];
 	}
@@ -230,9 +245,10 @@ PIECE createPiece(void){
 		if(0/*digitalRead(ROTATE) == HIGH*/){
 			break;
 		}
+		printf("placeholder, game end: resetFunc()\n");
 	}
 	//placeholder for code to signify game over
-	printf("placeholder, game end: resetFunc()\n");
+
 	//resetFunc();
 
 }

@@ -1,16 +1,15 @@
+#include <LedControl.h>
+
 #ifndef TETRIS_H
 #define TETRIS_H
-
-#include "noArduino.h"
 
 #define COLUMN_ROW
 
 #define xLEN 8
 #define yLEN 16
 
-#define gameState_ROW_count 19
 
-extern int gameState[8][gameState_ROW_count];
+extern int gameState[32][8];
 
 typedef enum {
 	up = 0, right, down, left //the direction of the top of the piece is pointing to
@@ -58,22 +57,22 @@ struct LOCATION {
 		LOCATION::y = b;
 		return *this;
 	}
-	LOCATION operator=(LOCATION L) {
+	LOCATION operator = (LOCATION L) {
 		LOCATION::x = L.x;
 		LOCATION::y = L.y;
 		return *this;
 	}
-	LOCATION operator+(LOCATION L) {
+	LOCATION operator + (LOCATION L) {
 		LOCATION buffer(x+L.x,y+L.y);
 		return buffer;
 	}
-	LOCATION operator-(LOCATION L) {
+	LOCATION operator - (LOCATION L) {
 		LOCATION buffer(x - L.x, y - L.y );
 		return buffer;
 	}
 };
 
-inline bool operator==(LOCATION a, LOCATION b) {
+inline bool operator == (LOCATION a, LOCATION b) {
 	if (a.x == b.x && a.y == b.y)
 		return true;
 	else
@@ -85,23 +84,26 @@ struct PIECE {
 	ORIENTATION state;
 	SHAPE shape;
 	PIECE() :state{up}, shape{I} {} //initializer
-	PIECE operator=(const PIECE &p) {
-		for (int i = 0; i < 4;i++)
-			index[i] = p.index[i];
+	PIECE operator = (const PIECE &p) {
+		for (int i = 0; i < 4;i++){
+			index[i].x = p.index[i].x;
+			index[i].y = p.index[i].y;
+		}
 		state = p.state;
 		shape = p.shape;
 	}
+
 };
 
 //Funtion prototype
-PIECE createPiece(void);
+PIECE createPiece(int shape);
 int drop(PIECE &currentPiece);
 void settle(PIECE &currentPiece);
 void rotation_piece(PIECE &currentPiece);
 void rotate(PIECE &currentPiece);
-inline void shift(PIECE &currentPiece, int direction);
-inline void deleteRow(int row);
-inline void gameOver(void);
+/*inline*/ void shift(PIECE &currentPiece, int direct);
+/*inline*/ void deleteRow(int row);
+/*inline*/ void gameOver(void);
 
 #ifdef RANDOM_BLOCK
 inline void transform(LOCATION &buffer, LOCATION original, LOCATION transformation);

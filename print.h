@@ -1,17 +1,11 @@
 #ifndef PRINT_H
 #define PRINT_H
 
-#include <LedControl>
+#include <LedControl.h>
 #include "tetris.h"
+#define True 1
+#define False 0
 
-#include "noArduino.h"
-
-#define TRUE 1
-#define FALSE 0
-
-inline void printState(void);
-inline void printPiece(const PIECE &p);
-inline void deletePiece(void);
-inline void updateScreen(const PIECE &p);
+void updateScreen(const PIECE &currentPiece);
 
 #endif

@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <EEPROM.h>
 
-#define INTERVAL 1000
-
 #define LEFT 0
 #define ROTATE 140
 #define DOWN 322
@@ -20,10 +18,16 @@ uint16_t mfilter[M_FILTERSIZE];
 uint8_t m_counter = 0;
 bool button_press = false, button_release = false;
 int qscompare(uint16_t a, uint16_t b);
+unsigned long interval_calc(unsigned long interval);
 
+bool savedNewPiece;
+bool newGame = True;
+bool swapLimitMet = false;
+SHAPE storedShape = J, tempShape = J;
 
-int gameState[32][8] = {0}; //gameState_ROW_count is defined as 19 in tetris.h
+int gameState[24][8] = {0}; //gameState_ROW_count is defined as 19 in tetris.h
 unsigned long previousMillis = 0;
+unsigned long interval = 1000;
 int newPiece = 1;
 PIECE currentPiece, oldPiece;
 LedControl gameScreen = LedControl(12, 11, 10, 4); //LedControl(dataPin,clockPin,csPin,numDevices)
@@ -50,7 +54,7 @@ void setup(){ //initialises the pins to different modes
     Serial.begin(9600);
 
     int index;
-    
+
     Serial.print("setup\n");
     for( index = 0; index < gameScreen.getDeviceCount(); index++) { //sets each led panel to turn on
       gameScreen.shutdown(index, false);
@@ -62,24 +66,30 @@ void setup(){ //initialises the pins to different modes
     pinMode(2, OUTPUT);
     Serial.print("setup done\n");
 
+    scoreScreen.setDigit(0, 4, highScore % 10, false);
+    scoreScreen.setDigit(0, 5, (highScore % 100) / 10, false);
+    scoreScreen.setDigit(0, 6, (highScore % 1000)/ 100, false);
+    scoreScreen.setDigit(0, 7, highScore / 1000, false);
+
 }
 
 void loop(){
 
   //Serial.print("cycle\n");
   if(newPiece){ //provides a new piece to the user
-      currentPiece = createPiece(random() % 6);
+      currentPiece = createPiece( static_cast<SHAPE>(random() % 7));
   }
-  
+
   unsigned long currentMillis = millis(); //samples the current time
 
-  if(currentMillis - previousMillis > INTERVAL){ //tests to see if timer is up for next cycle
+  if(currentMillis - previousMillis > interval){ //tests to see if timer is up for next cycle
     previousMillis = currentMillis;
-    //Serial.print("timer\n");
     newPiece = drop(currentPiece); //performs cycle
     updateScreen(currentPiece);
     m_counter = 0;
-    //Serial.print("Out of timer\n");
+    if(interval > 500){
+      interval = interval_calc(interval);
+    }
   }
 
  uint16_t button = analogRead(buttonPin), debounce = 0;
@@ -98,21 +108,40 @@ void loop(){
 
     input = mfilter[(M_FILTERSIZE + 1) / 2];
 
-    if (input > ((RIGHT + DOWN) / 2)) { //Right
+    if(input > (RESET + RIGHT) / 2){
+      if(newGame){
+        storedShape = currentPiece.shape;
+        currentPiece = createPiece(static_cast<SHAPE> (random() % 7));
+        newGame = false;
+        savedNewPiece = swapLimitMet = true;
+
+      } else if(!swapLimitMet){
+        tempShape = storedShape;
+        storedShape = currentPiece.shape;
+        currentPiece = createPiece( tempShape );
+
+        savedNewPiece = swapLimitMet = true;
+      }
+
+
+
+    }
+
+    else if (input > ((RIGHT + DOWN) / 2)) { //Right
         shift(currentPiece, 1);
         updateScreen(currentPiece);
     }
-    
+
     else if (input > ((DOWN + ROTATE) / 2)) { // Down
         newPiece = drop(currentPiece);
         updateScreen(currentPiece);
     }
-    
+
     else if (input > ((ROTATE + LEFT) / 2)) { // Rotate
         rotation_piece(currentPiece);
         updateScreen(currentPiece);
     }
-    
+
     else if (input < ((LEFT + ROTATE) / 2)) { // Left
         shift(currentPiece, -1);
         updateScreen(currentPiece);
@@ -126,46 +155,6 @@ void loop(){
  }
 
 }
- /*
-  if(analogRead(buttonPin) < 1000){
-    delay(10);
-    int oldState = analogRead(buttonPin);
-    delay(15);
-    if(analogRead(buttonPin) == oldState){
-        input = oldState;
-    } else {
-        input = -100;
-    }
-  }
-  if(ROTATE - 20 <= input && input <= ROTATE + 20){
-
-      rotation_piece(currentPiece);
-      updateScreen(currentPiece);
-      input = -100;
-  }
-
-  else if(DOWN - 20 <= input && input <= DOWN + 20){
- 
-      newPiece = drop(currentPiece);
-      updateScreen(currentPiece);
-      input = -100;
-  }
-
-  else if(RIGHT - 20 <= input && input <= RIGHT + 20){
-
-      shift(currentPiece, 1);
-      updateScreen(currentPiece);
-      input = -100;
-  }
-
-  else if(LEFT - 20 <= input && input <= LEFT + 20){
-
-      shift(currentPiece, -1);
-      updateScreen(currentPiece);
-      input = -100;
-  }
-  */
-
 
 int qscompare(uint16_t a, uint16_t b) {
   if (a < b) {
@@ -177,4 +166,10 @@ int qscompare(uint16_t a, uint16_t b) {
   }
 
   return 0;
+}
+
+unsigned long interval_calc(unsigned long interval){
+
+  interval -= 50;
+
 }

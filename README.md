@@ -1,26 +1,14 @@
 # fc-tetris
 Arduino Tetris
 
-(If the box is ticked, it means it is currently being worked on.)
-# To do
+#Project Complete.
 
-- [X] Stage complete, awaiting testing before further tasks
+Details:
+Language of implementation: C++
+Fully working on Arduino Uno
 
-# Optional
-- [ ] Adjust drop-down from single row drop to smooth dropping
-- [ ] Adjust game speed
-
-# Follow-up
-
-- [ ] Randomize initial piece orientation
-- [ ] Allow pieces to start from ABOVE the screen
-- [ ] Optimize code accordingly
-
-#extra features
-- [ ] Score counter
-- [ ] Design large scale with jumbo LEDs
-
-#end stage
-- [X] Design circuitry
-- [X] Prototype with Arduino (PENDING)
-- [X] Redesign code based on experiment (Hopefully no calls for huge overhauls.)
+Peripherals used:
+1. MAX 7221 LED Driver
+2. 8 X 8 LED Matrix
+3. 7 Segment Screen
+4. Push buttons
